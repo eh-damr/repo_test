@@ -43,7 +43,7 @@ jobs:
       - task: CopyFiles@2
         displayName: Copy deployment scripts to artifacts
         inputs:
-          SourceFolder: "$(Build.SourcesDirectory)/.ado/scripts/"
+          SourceFolder: "$(Build.SourcesDirectory)/.github/workflows/scripts/"
           TargetFolder: "$(Build.ArtifactStagingDirectory)/scripts/"
           cleanTargetFolder: false
           Contents: "**"
