@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - 'develop'
+  paths:
+    exclude:
+      - '.ado'
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: folderName
+  value: release
+
+stages:
+- stage: BUILD
+  jobs:
+    - template: build-arm-template.yml
+      parameters:
+          stageName: dev
+
+- template: adf-deploy-stage.yml
+  parameters:
+      stageName: dev

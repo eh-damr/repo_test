@@ -25,7 +25,7 @@ stages:
               displayName: Stop Triggers
               inputs:
                 ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
-                ScriptPath: "$(Pipeline.Workspace)/scripts/manage_triggers.ps1"
+                ScriptPath: "$(Pipeline.Workspace)/adf/scripts/manage_triggers.ps1"
                 ScriptArguments: >
                   -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
                   -ResourceGroupName $(ResourceGroupName)
@@ -53,7 +53,7 @@ stages:
               condition: always()
               inputs:
                 ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
-                ScriptPath: "$(Pipeline.Workspace)/scripts/manage_triggers.ps1"
+                ScriptPath: "$(Pipeline.Workspace)/adf/scripts/manage_triggers.ps1"
                 ScriptArguments: >
                   -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
                   -ResourceGroupName $(ResourceGroupName)
