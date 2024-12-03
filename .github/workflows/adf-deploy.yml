@@ -1,0 +1,30 @@
+name: Deploy to Azure Data Factory
+
+on:
+  push:
+    branches:
+      - main  # Trigger przy pushu do branch `main`
+
+jobs:
+  deploy_adf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Azure CLI
+      uses: azure/CLI@v1
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Dodaj sekrety w GitHubie
+
+    - name: Deploy to Azure Data Factory
+      run: |
+        az datafactory pipeline create \
+          --resource-group <RESOURCE_GROUP> \
+          --factory-name <DATA_FACTORY_NAME> \
+          --name <PIPELINE_NAME> \
+          --pipeline-config "$(cat adf_pipeline.json)"
