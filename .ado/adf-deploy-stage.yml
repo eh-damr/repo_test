@@ -1,0 +1,63 @@
+parameters:
+- name: stageName
+  type: string
+
+stages:
+- stage: ${{ parameters.stageName }}
+
+  jobs:
+  - deployment: ${{ parameters.stageName }}
+    environment: '${{ parameters.stageName }}'
+
+    variables:
+    - group: ${{ parameters.stageName }}
+
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+            - checkout: self
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                source: current
+
+            - task: AzurePowerShell@5
+              displayName: Stop Triggers
+              inputs:
+                ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
+                ScriptPath: "$(Pipeline.Workspace)/adf/scripts/manage_triggers.ps1"
+                ScriptArguments: >
+                  -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
+                  -ResourceGroupName $(ResourceGroupName)
+                  -DataFactoryName $(DataFactoryName)
+                  -predeployment $true
+                  -deleteDeployment $false
+                azurePowerShellVersion: LatestVersion
+
+            - task: AzureResourceManagerTemplateDeployment@3
+              displayName: ARM Template deployment
+              inputs:
+                deploymentScope: Resource Group
+                azureResourceManagerConnection: "sc-${{lower(parameters.stageName)}}"
+                subscriptionId: "$(AzureSubscriptionID)"
+                action: Create Or Update Resource Group
+                resourceGroupName: "$(ResourceGroupName)"
+                location: "$(AzureRegionName)"
+                csmFile: "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
+                csmParametersFile: "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateParametersForFactory.json"
+                overrideParameters: "-factoryName $(DataFactoryName)"
+                deploymentMode: Incremental
+
+            - task: AzurePowerShell@5
+              displayName: Start Triggers
+              condition: always()
+              inputs:
+                ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
+                ScriptPath: "$(Pipeline.Workspace)/adf/scripts/manage_triggers.ps1"
+                ScriptArguments: >
+                  -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
+                  -ResourceGroupName $(ResourceGroupName)
+                  -DataFactoryName $(DataFactoryName)
+                  -predeployment $false
+                  -deleteDeployment $false
+                azurePowerShellVersion: LatestVersion
