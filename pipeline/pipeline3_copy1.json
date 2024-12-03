@@ -1,0 +1,27 @@
+{
+	"name": "pipeline3_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "abcd",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "abcdee",
+					"value": "asdsas"
+				}
+			}
+		],
+		"variables": {
+			"abcdee": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
