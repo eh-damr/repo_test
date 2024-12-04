@@ -3,7 +3,7 @@ name: Deploy to Azure Data Factory
 on:
   push:
     branches:
-      - main   # Trigger przy pushu do branch `main`
+      - main    # Trigger przy pushu do branch `main`
 
 jobs:
   deploy_adf:
