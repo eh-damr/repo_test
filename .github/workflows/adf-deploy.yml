@@ -18,6 +18,20 @@ jobs:
       with:
         inlineScript: |
           echo "Azure CLI jest gotowe do użycia"
+        
+    - name: Enable dynamic extension installation
+      run: |
+          az config set extension.dynamic_install=yes_without_prompt
+    
+    - name: Install Azure Data Factory extension
+      run: |
+          az extension add --name datafactory
+    
+    - name: Check if adf_pipeline.json exists
+      run: |
+          echo "Checking adf_pipeline.json:"
+          ls -la
+          cat ./publish/adf_pipeline.json
 
     - name: Login to Azure
       uses: azure/login@v1
