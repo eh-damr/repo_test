@@ -1,0 +1,45 @@
+{
+    "name": "MainToLivePipeline",
+    "properties": {
+      "description": "Potok przenoszący dane z brancha 'main' do trybu 'live'.",
+      "activities": [
+        {
+          "name": "GetMainBranchData",
+          "type": "Copy",
+          "dependsOn": [],
+          "policy": {
+            "timeout": "1.00:00:00",
+            "retry": 3,
+            "retryIntervalInSeconds": 30,
+            "secureOutput": false,
+            "secureInput": false
+          },
+          "typeProperties": {
+            "source": {
+              "type": "GitSource",
+              "repository": "https://github.com/eh-damr/repo_test",
+              "branchName": "main"
+            },
+            "sink": {
+              "type": "BlobSink",
+              "writeBatchSize": 1000,
+              "writeBatchTimeout": "00:10:00"
+            }
+          },
+          "inputs": [
+            {
+              "referenceName": "GitRepositoryDataset",
+              "type": "DatasetReference"
+            }
+          ],
+          "outputs": [
+            {
+              "referenceName": "LiveModeBlobDataset",
+              "type": "DatasetReference"
+            }
+          ]
+        }
+      ]
+    }
+  }
+  
