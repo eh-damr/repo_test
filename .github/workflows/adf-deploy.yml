@@ -15,6 +15,9 @@ jobs:
 
     - name: Install Azure CLI
       uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          echo "Azure CLI jest gotowe do użycia"
 
     - name: Login to Azure
       uses: azure/login@v1
