@@ -1,5 +1,5 @@
 {
-	"name": "LiveModeBlobDataset",
+	"name": "livemodeblobdataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
