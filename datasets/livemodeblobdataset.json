@@ -1,0 +1,13 @@
+{
+    "name": "LiveModeBlobDataset",
+    "properties": {
+      "type": "AzureBlob",
+      "linkedServiceName": {
+        "referenceName": "AzureBlobLinkedService",
+        "type": "LinkedServiceReference"
+      },
+      "typeProperties": {
+        "folderPath": "live-mode-data/"
+      }
+    }
+  }
