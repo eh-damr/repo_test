@@ -16,9 +16,7 @@
           },
           "typeProperties": {
             "source": {
-              "type": "GitSource",
-              "repository": "https://github.com/eh-damr/repo_test",
-              "branchName": "main"
+              "type": "BlobSource"
             },
             "sink": {
               "type": "BlobSink",
@@ -28,7 +26,7 @@
           },
           "inputs": [
             {
-              "referenceName": "GitRepositoryDataset",
+              "referenceName": "MainBranchBlobDataset",
               "type": "DatasetReference"
             }
           ],
