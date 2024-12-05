@@ -13,6 +13,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Upload file to Azure Blob Storage
+      run: az storage blob upload --account-name "adlehupskillingdamianr" --container-name "container1" --file ./publish/adf_pipeline.json --name adf_pipeline.json --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }}
+
     - name: Install Azure CLI
       uses: azure/CLI@v1
       with:
