@@ -26,13 +26,13 @@
           },
           "inputs": [
             {
-              "referenceName": "MainBranchBlobDataset",
+              "referenceName": "mainbranchblobdataset",
               "type": "DatasetReference"
             }
           ],
           "outputs": [
             {
-              "referenceName": "LiveModeBlobDataset",
+              "referenceName": "livemodeblobdataset",
               "type": "DatasetReference"
             }
           ]
