@@ -1,0 +1,19 @@
+{
+	"name": "LiveModeBlobDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "adf_pipeline.json",
+				"container": "container1"
+			}
+		},
+		"schema": {}
+	}
+}

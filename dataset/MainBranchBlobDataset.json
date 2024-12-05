@@ -1,0 +1,126 @@
+{
+	"name": "MainBranchBlobDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "adf_pipeline.json",
+				"container": "container1"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"properties": {
+					"type": "object",
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"activities": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									},
+									"dependsOn": {
+										"type": "array"
+									},
+									"policy": {
+										"type": "object",
+										"properties": {
+											"timeout": {
+												"type": "string"
+											},
+											"retry": {
+												"type": "integer"
+											},
+											"retryIntervalInSeconds": {
+												"type": "integer"
+											},
+											"secureOutput": {
+												"type": "boolean"
+											},
+											"secureInput": {
+												"type": "boolean"
+											}
+										}
+									},
+									"typeProperties": {
+										"type": "object",
+										"properties": {
+											"source": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string"
+													}
+												}
+											},
+											"sink": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string"
+													},
+													"writeBatchSize": {
+														"type": "integer"
+													},
+													"writeBatchTimeout": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									},
+									"inputs": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"referenceName": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"outputs": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"referenceName": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
