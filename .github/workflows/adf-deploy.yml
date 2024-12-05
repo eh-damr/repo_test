@@ -52,3 +52,4 @@ jobs:
     - name: Deploy to Azure Data Factory
       run: |
         az datafactory pipeline create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "MainToLivePipeline" --pipeline @./publish/adf_pipeline.json
+ 
