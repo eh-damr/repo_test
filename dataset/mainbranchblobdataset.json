@@ -1,5 +1,5 @@
 {
-	"name": "MainBranchBlobDataset",
+	"name": "mainbranchblobdataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
