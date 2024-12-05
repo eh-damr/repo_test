@@ -43,11 +43,11 @@ jobs:
 
     - name: Create Source Dataset in Azure Data Factory
       run: |
-        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "MainBranchBlobDataset" --properties @datasets/mainbranchblobdataset.json
+        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "MainBranchBlobDataset" --properties @./datasets/mainbranchblobdataset.json
 
     - name: Create Sink Dataset in Azure Data Factory
       run: |
-        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "LiveModeBlobDataset" --properties @datasets/livemodeblobdataset.json
+        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "LiveModeBlobDataset" --properties @./datasets/livemodeblobdataset.json
 
     - name: Deploy to Azure Data Factory
       run: |
