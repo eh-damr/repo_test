@@ -27,7 +27,7 @@ jobs:
 
     - name: Install npm packages 
       run: npm install
-      working-directory: /work/build
+      working-directory: ./work/build
 
     - name: Validate ARM template
       run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./publish
