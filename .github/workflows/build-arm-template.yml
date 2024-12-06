@@ -1,0 +1,63 @@
+parameters:
+- name: stageName
+  type: string
+  default: DEV
+
+jobs:
+  - job: Build
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+    - group: Dev
+
+    steps:
+
+      - task: UseNode@1
+        inputs:
+          version: '22.x'
+        displayName: 'Install Node.js'
+
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: '$(Build.Repository.LocalPath)/publish'
+          verbose: true
+        displayName: 'Install npm package'
+
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.LocalPath)/publish'
+          customCommand: 'run build validate $(Build.Repository.LocalPath) $(DataFactoryID)'
+        displayName: 'Validate'
+
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.LocalPath)/publish'
+          customCommand: 'run build export $(Build.Repository.LocalPath) $(DataFactoryID) "ArmTemplate"'
+        displayName: 'Validate and Generate ARM template'
+
+      - task: CopyFiles@2
+        displayName: Copy deployment scripts to artifacts
+        inputs:
+          SourceFolder: "$(Build.SourcesDirectory)/.ado/scripts/"
+          TargetFolder: "$(Build.ArtifactStagingDirectory)/scripts/"
+          cleanTargetFolder: false
+          Contents: "**"
+          
+      - task: CopyFiles@2
+        displayName: Copy ArmTemplates
+        inputs:
+          SourceFolder: "$(Build.Repository.LocalPath)/publish/ArmTemplate/"
+          TargetFolder: "$(Build.ArtifactStagingDirectory)/ArmTemplate/"
+          cleanTargetFolder: false
+          Contents: "**"
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: "$(Build.ArtifactStagingDirectory)"
+          artifact: adf
+          publishLocation: pipeline
