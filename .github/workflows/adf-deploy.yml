@@ -32,6 +32,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }} # Dodaj sekrety w GitHubie
 
-    - name: Publish Pipelines to Live Mode
-      run: |
-        az datafactory publish --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1"
+    - name: Trigger PublishToLiveMode Pipeline
+      run: 
+        az datafactory pipeline create-run --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name PublishToLiveMode --parameters subscriptionId=${{ secrets.SUBSCRIPTION_ID }} resourceGroup="rg-eh-upskilling-eh-damian.r" adfName=adf-damianr1
