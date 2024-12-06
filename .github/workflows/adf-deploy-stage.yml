@@ -22,9 +22,12 @@ jobs:
       with:
         node-version: '22'
 
+    - name: Ensure publish directory exists
+      run: mkdir -p ./publish
+
     - name: Install npm packages
       run: npm install
-      working-directory: ${{ github.workspace }}/publish
+      working-directory: ./publish
 
     - name: Validate ARM template
       run: npm run build validate ./publish $DataFactoryID
