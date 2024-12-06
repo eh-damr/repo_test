@@ -24,7 +24,7 @@ jobs:
 
     - name: Install npm packages
       run: npm install
-      working-directory: ./publish
+      working-directory: ${{ github.workspace }}/publish
 
     - name: Validate ARM template
       run: npm run build validate ./publish $DataFactoryID
