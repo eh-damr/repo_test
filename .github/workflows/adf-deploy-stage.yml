@@ -30,8 +30,8 @@ jobs:
       working-directory: ./work/build
 
     - name: Validate ARM template
-      run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./publish
-      working-directory: ./publish
+      run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./work/build
+      working-directory: ./work/build
 
     - name: Generate ARM template
       run: npm run build export ./publish $DataFactoryID ArmTemplate
