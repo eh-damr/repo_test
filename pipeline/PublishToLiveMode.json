@@ -39,15 +39,6 @@
 			},
 			"adfName": {
 				"type": "String"
-			},
-			"tenantId": {
-				"type": "String"
-			},
-			"clientId": {
-				"type": "String"
-			},
-			"clientSecret": {
-				"type": "SecureString"
 			}
 		},
 		"annotations": []
