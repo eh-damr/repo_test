@@ -1,7 +1,9 @@
-name: Deploy Pipelines from Main Branch to Azure Data Factory
+name: Deploy Pipelines to Live Mode
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -29,18 +31,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }} # Dodaj sekrety w GitHubie
-  
-    - name: List all pipeline JSON files
-      id: list_files
-      run: |
-        pipelines=$(find ./pipeline -name "*.json")
-        echo "PIPELINES=${pipelines}" >> $GITHUB_ENV
-        echo "Found pipelines:"
-        echo "${pipelines}"
 
-    - name: Deploy pipelines to ADF
+    - name: Publish Pipelines to Live Mode
       run: |
-        for pipeline in ${{ env.PIPELINES }}; do
-          echo "Deploying $pipeline..."
-          az datafactory pipeline create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name $(basename "$pipeline" .json) --pipeline-file "$pipeline"
-        done
+        az datafactory publish --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1"

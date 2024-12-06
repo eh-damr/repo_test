@@ -1,0 +1,19 @@
+{
+    "name": "SourceBlobDataset",
+    "properties": {
+      "linkedServiceName": {
+        "referenceName": "AzureBlobLinkedService",
+        "type": "LinkedServiceReference"
+      },
+      "type": "AzureBlob",
+      "typeProperties": {
+        "folderPath": "source-folder/",
+        "fileName": "source-file.csv",
+        "format": {
+          "type": "TextFormat",
+          "columnDelimiter": ",",
+          "encodingName": "UTF-8"
+        }
+      }
+    }
+  }

@@ -1,0 +1,13 @@
+{
+    "name": "DestinationSqlDataset",
+    "properties": {
+      "linkedServiceName": {
+        "referenceName": "AzureSqlDatabaseLinkedService",
+        "type": "LinkedServiceReference"
+      },
+      "type": "AzureSqlTable",
+      "typeProperties": {
+        "tableName": "TargetTable"
+      }
+    }
+  }
