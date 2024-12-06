@@ -30,7 +30,7 @@ jobs:
       working-directory: ./work/build
 
     - name: Validate ARM template
-      run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./work/build
+      run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./work/build --factoryId="adf-damianr1"
       working-directory: ./work/build
 
     - name: Generate ARM template
