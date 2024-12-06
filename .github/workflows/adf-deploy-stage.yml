@@ -20,7 +20,7 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '22'
+        node-version: '18.x'
 
     - name: Ensure publish directory exists
       run: mkdir -p ./publish
@@ -30,7 +30,7 @@ jobs:
       working-directory: ./publish
 
     - name: Validate ARM template
-      run: npm run build validate ./publish $DataFactoryID
+      run: npm run build validate ./publish $DataFactoryID --factoryId=$DataFactoryID
       working-directory: ./publish
 
     - name: Generate ARM template
