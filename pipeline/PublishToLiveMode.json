@@ -10,10 +10,22 @@
             "url": "https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.DataFactory/factories/{adfName}/publish?api-version=2018-06-01",
             "method": "POST",
             "authentication": {
-              "type": "MSI"
+              "type": "MSI",
+              "resource": "https://management.azure.com/"
             }
           }
         }
-      ]
+      ],
+      "parameters": {
+        "subscriptionId": {
+          "type": "String"
+        },
+        "resourceGroup": {
+          "type": "String"
+        },
+        "adfName": {
+          "type": "String"
+        }
+      }
     }
   }
