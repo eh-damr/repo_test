@@ -36,4 +36,4 @@ jobs:
       run: |
         PARAMS="{\"subscriptionId\":\"${{ secrets.SUBSCRIPTION_ID }}\",\"resourceGroup\":\"${{ secrets.RESOURCE_GROUP }}\",\"adfName\":\"${{ secrets.ADF_NAME }}\"}"
         echo "Using parameters: $PARAMS"
-        az datafactory pipeline create-run --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name PublishToLiveMode --parameters "$PARAMS"  
+        az datafactory pipeline create-run --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name PublishToLiveMode --parameters "$PARAMS" 
