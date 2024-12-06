@@ -1,20 +1,15 @@
-name: Deploy to Azure Data Factory
+name: Deploy Pipelines from Main Branch to Azure Data Factory
 
 on:
-  push:
-    branches:
-      - main    # Trigger przy pushu do branch `main`
+  workflow_dispatch:
 
 jobs:
-  deploy_adf:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
-    - name: Upload file to Azure Blob Storage
-      run: az storage blob upload --account-name "adlehupskillingdamianr" --container-name "container1" --file ./publish/adf_pipeline.json --name adf_pipeline.json --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }} --overwrite 
 
     - name: Install Azure CLI
       uses: azure/CLI@v1
@@ -29,27 +24,23 @@ jobs:
     - name: Install Azure Data Factory extension
       run: |
           az extension add --name datafactory
-    
-    - name: Check if adf_pipeline.json exists
-      run: |
-          echo "Checking adf_pipeline.json:"
-          ls -la
-          cat ./publish/adf_pipeline.json
 
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }} # Dodaj sekrety w GitHubie
-
-    - name: Create Source Dataset in Azure Data Factory
+  
+    - name: List all pipeline JSON files
+      id: list_files
       run: |
-        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "MainBranchBlobDataset" --properties @./datasets/mainbranchblobdataset.json
+        pipelines=$(find ./pipeline -name "*.json")
+        echo "PIPELINES=${pipelines}" >> $GITHUB_ENV
+        echo "Found pipelines:"
+        echo "${pipelines}"
 
-    - name: Create Sink Dataset in Azure Data Factory
+    - name: Deploy pipelines to ADF
       run: |
-        az datafactory dataset create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "LiveModeBlobDataset" --properties @./datasets/livemodeblobdataset.json
-
-    - name: Deploy to Azure Data Factory
-      run: |
-        az datafactory pipeline create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name "MainToLivePipeline" --pipeline @./publish/adf_pipeline.json
- 
+        for pipeline in ${{ env.PIPELINES }}; do
+          echo "Deploying $pipeline..."
+          az datafactory pipeline create --resource-group "rg-eh-upskilling-eh-damian.r" --factory-name "adf-damianr1" --name $(basename "$pipeline" .json) --pipeline-file "$pipeline"
+        done
