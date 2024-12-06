@@ -11,6 +11,15 @@
         },
         "adfName": {
           "type": "String"
+        },
+        "tenantId": {
+          "type": "String"
+        },
+        "clientId": {
+          "type": "String"
+        },
+        "clientSecret": {
+          "type": "SecureString"
         }
       },
       "activities": [
@@ -24,9 +33,12 @@
               "Content-Type": "application/json"
             },
             "authentication": {
-              "type": "MSI",
-              "resource": "https://management.azure.com/"
-            },
+                "type": "ServicePrincipal",
+                "tenant": "@{pipeline().parameters.tenantId}",
+                "servicePrincipalId": "@{pipeline().parameters.clientId}",
+                "servicePrincipalKey": "@{pipeline().parameters.clientSecret}",
+                "resource": "https://management.azure.com/"
+              },
             "body": "{}"
           }
         }
