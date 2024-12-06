@@ -23,7 +23,10 @@
 						"value": "https://management.azure.com/subscriptions/@{pipeline().parameters.subscriptionId}/resourceGroups/@{pipeline().parameters.resourceGroup}/providers/Microsoft.DataFactory/factories/@{pipeline().parameters.adfName}/publish?api-version=2018-06-01",
 						"type": "Expression"
 					},
-					"body": "{}"
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com/"
+					}
 				}
 			}
 		],
