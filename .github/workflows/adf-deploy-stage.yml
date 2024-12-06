@@ -1,63 +1,70 @@
-parameters:
-- name: stageName
-  type: string
+name: Deploy to Azure Data Factory
 
-stages:
-- stage: ${{ parameters.stageName }}
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pipeline/**/*'
+      - '.github/workflows/**/*'
+  workflow_dispatch:
 
-  jobs:
-  - deployment: ${{ parameters.stageName }}
-    environment: '${{ parameters.stageName }}'
+jobs:
+  build-template:
+    runs-on: ubuntu-latest
 
-    variables:
-    - group: ${{ parameters.stageName }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-    strategy:
-     runOnce:
-       deploy:
-         steps:
-            - checkout: self
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                source: current
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
 
-            - task: AzurePowerShell@5
-              displayName: Stop Triggers
-              inputs:
-                ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
-                ScriptPath: "$(Pipeline.Workspace)/manage_triggers.ps1"
-                ScriptArguments: >
-                  -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
-                  -ResourceGroupName $(ResourceGroupName)
-                  -DataFactoryName $(DataFactoryName)
-                  -predeployment $true
-                  -deleteDeployment $false
-                azurePowerShellVersion: LatestVersion
+    - name: Install npm packages
+      run: npm install
+      working-directory: ./publish
 
-            - task: AzureResourceManagerTemplateDeployment@3
-              displayName: ARM Template deployment
-              inputs:
-                deploymentScope: Resource Group
-                azureResourceManagerConnection: "sc-${{lower(parameters.stageName)}}"
-                subscriptionId: "$(AzureSubscriptionID)"
-                action: Create Or Update Resource Group
-                resourceGroupName: "$(ResourceGroupName)"
-                location: "$(AzureRegionName)"
-                csmFile: "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
-                csmParametersFile: "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateParametersForFactory.json"
-                overrideParameters: "-factoryName $(DataFactoryName)"
-                deploymentMode: Incremental
+    - name: Validate ARM template
+      run: npm run build validate ./publish $DataFactoryID
+      working-directory: ./publish
 
-            - task: AzurePowerShell@5
-              displayName: Start Triggers
-              condition: always()
-              inputs:
-                ConnectedServiceNameARM: "sc-${{lower(parameters.stageName)}}"
-                ScriptPath: "$(Pipeline.Workspace)/manage_triggers.ps1"
-                ScriptArguments: >
-                  -armTemplate "$(Pipeline.Workspace)/adf/ArmTemplate/ARMTemplateForFactory.json"
-                  -ResourceGroupName $(ResourceGroupName)
-                  -DataFactoryName $(DataFactoryName)
-                  -predeployment $false
-                  -deleteDeployment $false
-                azurePowerShellVersion: LatestVersion
+    - name: Generate ARM template
+      run: npm run build export ./publish $DataFactoryID ArmTemplate
+      working-directory: ./publish
+
+    - name: Upload ARM templates
+      uses: actions/upload-artifact@v3
+      with:
+        name: arm-templates
+        path: ./publish/ArmTemplate/
+
+  deploy-adf:
+    needs: build-template
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download ARM templates
+      uses: actions/download-artifact@v3
+      with:
+        name: arm-templates
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Stop triggers
+      run: |
+        pwsh ./github/workflows/script/manage_triggers.ps1 -armTemplate ./publish/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
+      shell: pwsh
+
+    - name: Deploy ARM Template
+      run: |
+        az deployment group create --resource-group "rg-eh-upskilling-eh-damian.r" --template-file ./publish/ArmTemplate/ARMTemplateForFactory.json --parameters @./publish/ArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName=$DataFactoryName
+
+    - name: Start triggers
+      run: |
+        pwsh ./github/workflows/script/manage_triggers.ps1 -armTemplate ./publish/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $false
+      shell: pwsh
