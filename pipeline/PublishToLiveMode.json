@@ -2,24 +2,6 @@
     "name": "PublishToLiveMode",
     "properties": {
       "description": "Pipeline that publishes all changes from GitHub to Live Mode in ADF.",
-      "activities": [
-        {
-          "name": "TriggerPublish",
-          "type": "WebActivity",
-          "typeProperties": {
-            "url": "https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.DataFactory/factories/{adfName}/publish?api-version=2018-06-01",
-            "method": "POST",
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "authentication": {
-              "type": "MSI",
-              "resource": "https://management.azure.com/"
-            },
-            "body": "{}"
-          }
-        }
-      ],
       "parameters": {
         "subscriptionId": {
           "type": "String"
@@ -30,6 +12,24 @@
         "adfName": {
           "type": "String"
         }
-      }
+      },
+      "activities": [
+        {
+          "name": "TriggerPublish",
+          "type": "WebActivity",
+          "typeProperties": {
+            "url": "https://management.azure.com/subscriptions/@{pipeline().parameters.subscriptionId}/resourceGroups/@{pipeline().parameters.resourceGroup}/providers/Microsoft.DataFactory/factories/@{pipeline().parameters.adfName}/publish?api-version=2018-06-01",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "authentication": {
+              "type": "MSI",
+              "resource": "https://management.azure.com/"
+            },
+            "body": "{}"
+          }
+        }
+      ]
     }
   }
