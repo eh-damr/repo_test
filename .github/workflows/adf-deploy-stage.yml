@@ -25,7 +25,7 @@ jobs:
     - name: Ensure publish directory exists
       run: mkdir -p ./publish
 
-    - name: Install npm packages
+    - name: Install npm packages 
       run: npm install
       working-directory: ./publish
 
