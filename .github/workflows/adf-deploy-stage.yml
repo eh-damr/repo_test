@@ -30,7 +30,7 @@ jobs:
       working-directory: ./work/build
 
     - name: Validate ARM template
-      run: node node_modules/@microsoft/azure-data-factory-utilities/lib/index validate ./work/build --factoryId="adf-damianr1"
+      run: npm run build validate ${{github.workspace}}/work/ /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ secrets.ADF_NAME }}  # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
       working-directory: ./work/build
 
     - name: Generate ARM template
