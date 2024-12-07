@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: arm-templates
-        path: ./work/ArmTemplate/
+        path: ./work/ArmTemplate/ 
 
   deploy-adf:
     needs: build-template
