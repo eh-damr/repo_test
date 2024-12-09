@@ -86,5 +86,5 @@ jobs:
 
     - name: Start triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -PreDeployment $False
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -PreDeployment:$False
       shell: pwsh
