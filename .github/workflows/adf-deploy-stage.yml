@@ -53,7 +53,7 @@ jobs:
         path: ${{github.workspace}}/work/build/ExportedArmTemplate/**
         include-hidden-files: true
 
-  deploy-adf:
+  deploy-adf: 
     needs: build-template
     runs-on: ubuntu-latest
 
