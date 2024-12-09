@@ -20,6 +20,11 @@ jobs:
         fetch-depth: 0 # Pobiera cale repo a nie ostatni commit
         submodules: true
 
+    - name: Verify manage_triggers.ps1 existence
+      run: |
+        ls -l ${{ github.workspace }}/work/
+        cat ${{ github.workspace }}/work/manage_triggers.ps1 || echo "File not found"
+
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
