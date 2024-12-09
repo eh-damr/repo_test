@@ -65,10 +65,15 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Verify manage_triggers.ps1 existence
+      run: ls -l ${{github.workspace}}/.github/workflows/script/
+
     - name: Stop triggers
       run: |
         pwsh ${{github.workspace}}/.github/workflows/script/manage_triggers.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
       shell: pwsh
+      env:
+        DataFactoryName: ${{ secrets.ADF_NAME }}
 
     - name: Deploy ARM Template
       run: |
