@@ -70,7 +70,7 @@ jobs:
 
     - name: Stop triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment $True
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
