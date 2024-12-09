@@ -7,7 +7,7 @@ on:
     paths:
       - 'pipeline/**/*'
       - '.github/workflows/**/*'
-      - 'work/**/*'
+      - 'work/**/*' 
   workflow_dispatch:
 
 jobs:
