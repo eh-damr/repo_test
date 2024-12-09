@@ -68,9 +68,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Install Az PowerShell modules
+      run: |
+          pwsh -Command Install-Module -Name Az -Force -Scope CurrentUser
+          pwsh -Command Install-Module -Name Az.DataFactory -Force -Scope CurrentUser
+
     - name: Stop triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1"
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ArmTemplateParameters ./ARMTemplateParametersForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1"
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
