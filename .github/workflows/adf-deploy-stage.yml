@@ -82,7 +82,7 @@ jobs:
 
     - name: Deploy ARM Template
       run: |
-        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json --parameters ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName="adf-damianr1"
+        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/ARMTemplateForFactory.json --parameters ${{github.workspace}}/ARMTemplateParametersForFactory.json --parameters factoryName="adf-damianr1"
 
     - name: Start triggers
       run: |
