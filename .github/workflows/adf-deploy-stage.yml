@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'pipeline/**/*'
-      - '.github/workflows/**/*'
-      - 'work/**/*' 
-  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build-template:
