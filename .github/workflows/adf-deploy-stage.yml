@@ -73,6 +73,11 @@ jobs:
           pwsh -Command Install-Module -Name Az -Force -Scope CurrentUser
           pwsh -Command Install-Module -Name Az.DataFactory -Force -Scope CurrentUser
 
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Stop triggers
       run: |
         pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ArmTemplateParameters .\ARMTemplateParametersForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1"
@@ -84,7 +89,12 @@ jobs:
       run: |
         az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/ARMTemplateForFactory.json --parameters ${{github.workspace}}/ARMTemplateParametersForFactory.json --parameters factoryName="adf-damianr1"
 
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Start triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -PreDeployment:$False
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ArmTemplateParameters .\ARMTemplateParametersForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -PreDeployment:$False
       shell: pwsh
