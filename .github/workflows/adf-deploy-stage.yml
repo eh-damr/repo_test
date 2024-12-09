@@ -68,12 +68,18 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: List all files
-      run: ls -R ${{ github.workspace }}
+    - name: Check PowerShell version
+      run: pwsh -Version
+
+    - name: Set executable permissions
+      run: chmod +x ${{github.workspace}}/work/manage_triggers.ps1
+
+    - name: Check file encoding
+      run: file -i /home/runner/work/repo_test/repo_test/work/manage_triggers.ps1
 
     - name: Stop triggers
       run: |
-        pwsh ${{github.workspace}}/work/manage_triggers.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
+        pwsh -File ${{github.workspace}}/work/manage_triggers.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
