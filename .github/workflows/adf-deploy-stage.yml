@@ -35,13 +35,20 @@ jobs:
       working-directory: ${{github.workspace}}/work/build
 
     - name: List generated files
-      run: ls -R /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate
+      run: ls -R ${{github.workspace}}/work/build/ExportedArmTemplate
+
+    - name: Fix permissions
+      run: chmod -R 755 ${{github.workspace}}/work/build/ExportedArmTemplate
+
+    - name: Create ExportedArmTemplate directory
+      run: mkdir -p ${{github.workspace}}/work/build/ExportedArmTemplate
 
     - name: Upload ARM templates
       uses: actions/upload-artifact@v3
       with:
         name: ExportedArmTemplate
         path: ${{github.workspace}}/work/build/ExportedArmTemplate/**
+        include-hidden-files: true
 
   deploy-adf:
     needs: build-template
@@ -51,7 +58,7 @@ jobs:
     - name: Download ARM templates
       uses: actions/download-artifact@v3
       with:
-        name: arm-templates
+        name: ExportedArmTemplate
 
     - name: Log in to Azure
       uses: azure/login@v1
