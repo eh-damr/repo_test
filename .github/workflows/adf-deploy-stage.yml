@@ -34,11 +34,14 @@ jobs:
       run: npm run build export ${{github.workspace}}/work/ /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ secrets.ADF_NAME }} "ExportedArmTemplate"
       working-directory: ${{github.workspace}}/work/build
 
+    - name: List generated files
+      run: ls -R /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate
+
     - name: Upload ARM templates
       uses: actions/upload-artifact@v3
       with:
         name: ExportedArmTemplate
-        path: ${{github.workspace}}/work/ExportedArmTemplate
+        path: ${{github.workspace}}/work/build/ExportedArmTemplate/**
 
   deploy-adf:
     needs: build-template
