@@ -24,21 +24,21 @@ jobs:
 
     - name: Install npm packages 
       run: npm install
-      working-directory: ${{github.workspace}}/work 
+      working-directory: ${{github.workspace}}/work/build 
 
     - name: Validate ARM template
       run: npm run build validate ${{github.workspace}}/work/ /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ secrets.ADF_NAME }}  # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
-      working-directory: ${{github.workspace}}/work
+      working-directory: ${{github.workspace}}/work/build
 
     - name: Generate ARM template
       run: npm run build export ${{github.workspace}}/work/ /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ secrets.ADF_NAME }} "ExportedArmTemplate"
-      working-directory: ${{github.workspace}}/work
+      working-directory: ${{github.workspace}}/work/build
 
     - name: Upload ARM templates
       uses: actions/upload-artifact@v3
       with:
         name: arm-templates
-        path: ./work/ArmTemplate/
+        path: ${{github.workspace}}/work/build/ArmTemplate/
 
   deploy-adf:
     needs: build-template
