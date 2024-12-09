@@ -70,16 +70,16 @@ jobs:
 
     - name: Stop triggers
       run: |
-        pwsh -File ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
+        pwsh -File ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
 
     - name: Deploy ARM Template
       run: |
-        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json --parameters ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName=$DataFactoryName
+        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json --parameters ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName=$DataFactoryName
 
     - name: Start triggers
       run: |
-        pwsh ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $false
+        pwsh ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $false
       shell: pwsh
