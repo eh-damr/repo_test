@@ -70,14 +70,14 @@ jobs:
 
     - name: Stop triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName $DataFactoryName -predeployment $true
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment $true
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
 
     - name: Deploy ARM Template
       run: |
-        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json --parameters ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName=$DataFactoryName
+        az deployment group create --resource-group "${{ secrets.RESOURCE_GROUP }}" --template-file ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json --parameters ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateParametersForFactory.json --parameters factoryName="adf-damianr1"
 
     - name: Start triggers
       run: |
