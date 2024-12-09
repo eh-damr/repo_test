@@ -37,8 +37,8 @@ jobs:
     - name: Upload ARM templates
       uses: actions/upload-artifact@v3
       with:
-        name: arm-templates
-        path: ${{github.workspace}}/work/build/ArmTemplate/
+        name: ExportedArmTemplate
+        path: ${{github.workspace}}/work/ExportedArmTemplate
 
   deploy-adf:
     needs: build-template
