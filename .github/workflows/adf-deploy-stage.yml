@@ -70,7 +70,7 @@ jobs:
 
     - name: Stop triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment 1
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate /home/runner/work/repo_test/repo_test/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment $True
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
@@ -81,5 +81,5 @@ jobs:
 
     - name: Start triggers
       run: |
-        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment 0
+        pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ExportedArmTemplate/ARMTemplateForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1" -predeployment $False
       shell: pwsh
