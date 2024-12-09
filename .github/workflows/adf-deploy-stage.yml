@@ -70,7 +70,7 @@ jobs:
 
     - name: Stop triggers
       run: |
-        pwsh -File ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
+        pwsh.exe -File ${{github.workspace}}/work/build/ExportedArmTemplate/PrePostDeploymentScript.ps1 -armTemplate ${{github.workspace}}/work/build/ArmTemplate/ARMTemplateForFactory.json -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -DataFactoryName $DataFactoryName -predeployment $true
       shell: pwsh
       env:
         DataFactoryName: ${{ secrets.ADF_NAME }}
