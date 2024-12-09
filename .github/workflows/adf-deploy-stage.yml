@@ -78,7 +78,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Stop triggers
+    - name: Stop triggers 
       run: |
         pwsh -File .\PrePostDeploymentScript.ps1 -armTemplate .\ARMTemplateForFactory.json -ArmTemplateParameters .\ARMTemplateParametersForFactory.json -ResourceGroupName "rg-eh-upskilling-eh-damian.r" -DataFactoryName "adf-damianr1"
       shell: pwsh
